@@ -40,12 +40,21 @@ services:
     networks:
       - oms-network
 
+  zipkin:
+    image: openzipkin/zipkin:latest
+    container_name: oms-zipkin
+    ports:
+      - "9411:9411"
+    networks:
+      - oms-network
+
   oms-app:
     build: .
     container_name: oms-application
     depends_on:
       - postgres
       - kafka
+      - zipkin
     ports:
       - "8080:8080"
     environment:
@@ -53,6 +62,7 @@ services:
       SPRING_DATASOURCE_USERNAME: omsuser
       SPRING_DATASOURCE_PASSWORD: omspass
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      MANAGEMENT_ZIPKIN_TRACING_ENDPOINT: http://zipkin:9411/api/v2/spans
     networks:
       - oms-network
 

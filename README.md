@@ -419,6 +419,7 @@ services:
   postgres:    # PostgreSQL database on port 5432
   zookeeper:   # Kafka coordination service
   kafka:       # Event streaming on port 9092
+  zipkin:      # Distributed tracing UI on port 9411
   oms-app:     # Spring Boot application on port 8080
 ```
 
@@ -527,6 +528,36 @@ oms-java/
 - **Swagger UI**: http://localhost:8080/swagger-ui.html
 - **PostgreSQL**: localhost:5432
 - **Kafka**: localhost:9092
+- **Zipkin UI**: http://localhost:9411/zipkin
+
+### Distributed Tracing
+
+The application uses **Micrometer Tracing** with **Zipkin** for distributed tracing:
+- Every request gets a unique `traceId` and `spanId`
+- Traces are automatically sent to Zipkin
+- View traces in Zipkin UI: http://localhost:9411/zipkin
+- Traces include service calls, SAGA operations, and Kafka events
+
+### Structured Logging
+
+Logs are structured in JSON format with:
+- **traceId**: Unique identifier for request tracing
+- **spanId**: Unique identifier for operation within trace
+- **service**: Service name (oms-service)
+- **timestamp**: ISO 8601 format
+- **level**: Log level (INFO, WARN, ERROR)
+- **message**: Log message
+
+Logs are written to:
+- **Console**: JSON format with trace context
+- **File**: `logs/oms-service.log` (rotated daily, 7-day retention)
+
+### Method Tracing
+
+AOP-based logging automatically traces:
+- All service layer methods with execution time
+- All SAGA operations with start/complete/failure
+- Automatic correlation with distributed traces
 
 ### Sample Data
 
@@ -550,6 +581,8 @@ The system automatically loads 5 sample orders on startup:
 ✅ **JWT Security** - Optional token-based authentication
 ✅ **Swagger Documentation** - Interactive API docs
 ✅ **Postman Collection** - Ready-to-use API tests
+✅ **Distributed Tracing** - Zipkin-based request tracing
+✅ **Structured Logging** - JSON logs with correlation IDs
 ✅ **Docker Support** - Complete containerized deployment
 ✅ **Clean Architecture** - Maintainable and testable code
 ✅ **Production Ready** - Error handling, validation, logging

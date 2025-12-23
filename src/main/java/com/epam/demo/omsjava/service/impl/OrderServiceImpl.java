@@ -1,5 +1,6 @@
 package com.epam.demo.omsjava.service.impl;
 
+import com.epam.demo.omsjava.circuitbreaker.WithCircuitBreaker;
 import com.epam.demo.omsjava.domain.Order;
 import com.epam.demo.omsjava.domain.OrderItem;
 import com.epam.demo.omsjava.domain.OrderStatus;
@@ -31,6 +32,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
+    @WithCircuitBreaker(name = "orderService")
     public OrderResponse createOrder(CreateOrderRequest request) {
         Order order = new Order();
         order.setUserId(request.getUserId());
@@ -54,6 +56,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @WithCircuitBreaker(name = "orderService")
     public OrderResponse getOrder(UUID id) {
         Order order = orderRepository.findById(id)
                 .orElseThrow(() -> new OrderNotFoundException(id));
