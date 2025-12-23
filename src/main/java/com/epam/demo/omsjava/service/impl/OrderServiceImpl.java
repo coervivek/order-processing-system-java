@@ -110,6 +110,7 @@ public class OrderServiceImpl implements OrderService {
             return dto;
         }).collect(Collectors.toList());
         resp.setItems(items);
+        resp.setTotal(order.getItems().stream().mapToDouble(i -> i.getPrice() * i.getQuantity()).sum());
         return resp;
     }
 }

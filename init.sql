@@ -3,6 +3,37 @@
 -- Enable UUID extension
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
+-- Create tables
+CREATE TABLE IF NOT EXISTS orders (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id VARCHAR(255) NOT NULL,
+    status VARCHAR(50) NOT NULL,
+    created_at TIMESTAMP NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS order_item (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    product_name VARCHAR(255) NOT NULL,
+    quantity INTEGER NOT NULL,
+    price DOUBLE PRECISION NOT NULL,
+    order_id UUID NOT NULL,
+    CONSTRAINT fk_order FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS saga_instance (
+    saga_id VARCHAR(255) PRIMARY KEY,
+    order_id VARCHAR(255),
+    status VARCHAR(50) NOT NULL,
+    started_at TIMESTAMP NOT NULL,
+    completed_at TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS processed_events (
+    event_id VARCHAR(255) PRIMARY KEY,
+    event_type VARCHAR(100) NOT NULL,
+    processed_at TIMESTAMP NOT NULL
+);
+
 -- Insert sample orders with explicit UUIDs
 INSERT INTO orders (id, user_id, status, created_at) VALUES
 ('550e8400-e29b-41d4-a716-446655440001', 'user123', 'PENDING', NOW() - INTERVAL '2 hours'),

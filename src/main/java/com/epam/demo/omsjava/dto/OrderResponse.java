@@ -10,6 +10,7 @@ public class OrderResponse {
     private String userId;
     private OrderStatus status;
     private LocalDateTime createdAt;
+    private Double total;
     private List<OrderItemDto> items;
 
     public UUID getId() { return id; }
@@ -20,6 +21,8 @@ public class OrderResponse {
     public void setStatus(OrderStatus status) { this.status = status; }
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+    public Double getTotal() { return total; }
+    public void setTotal(Double total) { this.total = total; }
     public List<OrderItemDto> getItems() { return items; }
     public void setItems(List<OrderItemDto> items) { this.items = items; }
 }

@@ -56,6 +56,7 @@ POST /api/orders
 Content-Type: application/json
 
 {
+  "userId": "user123",
   "items": [
     {
       "productName": "Laptop",
@@ -68,7 +69,7 @@ Content-Type: application/json
 
 ### Get Order by ID
 ```bash
-GET /api/orders/{id}
+GET /api/orders/{uuid}
 ```
 
 ### Get All Orders
@@ -79,12 +80,12 @@ GET /api/orders?status=PENDING
 
 ### Update Order Status
 ```bash
-PATCH /api/orders/{id}/status?status=PROCESSING
+PATCH /api/orders/{uuid}/status?status=PROCESSING
 ```
 
 ### Cancel Order
 ```bash
-POST /api/orders/{id}/cancel
+POST /api/orders/{uuid}/cancel
 ```
 
 ## Order Status Flow
