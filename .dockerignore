@@ -1,0 +1,8 @@
+.gradle
+.idea
+*.iml
+.git
+.gitignore
+README.md
+app.log
+app.pid
