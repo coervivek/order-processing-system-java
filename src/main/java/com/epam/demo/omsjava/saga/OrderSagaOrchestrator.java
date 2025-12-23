@@ -19,32 +19,32 @@ public class OrderSagaOrchestrator {
     }
 
     @Transactional
-    public void startOrderSaga(Long orderId, Double totalAmount) {
+    public void startOrderSaga(UUID orderId, Double totalAmount) {
         SagaInstance saga = new SagaInstance();
         saga.setSagaId(UUID.randomUUID().toString());
-        saga.setOrderId(orderId);
+        saga.setOrderId(orderId.toString());
         saga.setStatus(SagaStatus.STARTED);
         saga.setStartedAt(LocalDateTime.now());
         sagaRepository.save(saga);
         
         OrderCreatedEvent event = new OrderCreatedEvent(orderId, totalAmount);
-        kafkaTemplate.send("order-events", String.valueOf(orderId), event);
+        kafkaTemplate.send("order-events", orderId.toString(), event);
     }
 
     @Transactional
-    public void compensateOrder(Long orderId) {
-        sagaRepository.findByOrderId(orderId).ifPresent(saga -> {
+    public void compensateOrder(UUID orderId) {
+        sagaRepository.findByOrderId(orderId.toString()).ifPresent(saga -> {
             saga.setStatus(SagaStatus.COMPENSATING);
             sagaRepository.save(saga);
         });
         
         OrderCancelledEvent event = new OrderCancelledEvent(orderId, "Customer cancellation");
-        kafkaTemplate.send("order-compensation", String.valueOf(orderId), event);
+        kafkaTemplate.send("order-compensation", orderId.toString(), event);
     }
     
     @Transactional
-    public void completeSaga(Long orderId) {
-        sagaRepository.findByOrderId(orderId).ifPresent(saga -> {
+    public void completeSaga(UUID orderId) {
+        sagaRepository.findByOrderId(orderId.toString()).ifPresent(saga -> {
             saga.setStatus(SagaStatus.COMPLETED);
             saga.setCompletedAt(LocalDateTime.now());
             sagaRepository.save(saga);
@@ -52,8 +52,8 @@ public class OrderSagaOrchestrator {
     }
     
     @Transactional
-    public void markCompensated(Long orderId) {
-        sagaRepository.findByOrderId(orderId).ifPresent(saga -> {
+    public void markCompensated(UUID orderId) {
+        sagaRepository.findByOrderId(orderId.toString()).ifPresent(saga -> {
             saga.setStatus(SagaStatus.COMPENSATED);
             saga.setCompletedAt(LocalDateTime.now());
             sagaRepository.save(saga);

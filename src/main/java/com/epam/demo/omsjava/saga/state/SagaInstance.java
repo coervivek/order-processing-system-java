@@ -9,7 +9,7 @@ public class SagaInstance {
     @Id
     private String sagaId;
     
-    private Long orderId;
+    private String orderId;
     
     @Enumerated(EnumType.STRING)
     private SagaStatus status;
@@ -19,8 +19,8 @@ public class SagaInstance {
     
     public String getSagaId() { return sagaId; }
     public void setSagaId(String sagaId) { this.sagaId = sagaId; }
-    public Long getOrderId() { return orderId; }
-    public void setOrderId(Long orderId) { this.orderId = orderId; }
+    public String getOrderId() { return orderId; }
+    public void setOrderId(String orderId) { this.orderId = orderId; }
     public SagaStatus getStatus() { return status; }
     public void setStatus(SagaStatus status) { this.status = status; }
     public LocalDateTime getStartedAt() { return startedAt; }

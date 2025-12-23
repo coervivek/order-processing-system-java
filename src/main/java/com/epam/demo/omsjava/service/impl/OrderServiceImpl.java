@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,6 +33,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public OrderResponse createOrder(CreateOrderRequest request) {
         Order order = new Order();
+        order.setUserId(request.getUserId());
         order.setStatus(OrderStatus.PENDING);
         order.setCreatedAt(LocalDateTime.now());
         List<OrderItem> items = request.getItems().stream().map(dto -> {
@@ -52,7 +54,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderResponse getOrder(Long id) {
+    public OrderResponse getOrder(UUID id) {
         Order order = orderRepository.findById(id)
                 .orElseThrow(() -> new OrderNotFoundException(id));
         return toResponse(order);
@@ -66,7 +68,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public OrderResponse updateOrderStatus(Long id, OrderStatus status) {
+    public OrderResponse updateOrderStatus(UUID id, OrderStatus status) {
         Order order = orderRepository.findById(id)
                 .orElseThrow(() -> new OrderNotFoundException(id));
         order.setStatus(status);
@@ -75,7 +77,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public void cancelOrder(Long id) {
+    public void cancelOrder(UUID id) {
         Order order = orderRepository.findById(id)
                 .orElseThrow(() -> new OrderNotFoundException(id));
         if (order.getStatus() != OrderStatus.PENDING) {
@@ -97,6 +99,7 @@ public class OrderServiceImpl implements OrderService {
     private OrderResponse toResponse(Order order) {
         OrderResponse resp = new OrderResponse();
         resp.setId(order.getId());
+        resp.setUserId(order.getUserId());
         resp.setStatus(order.getStatus());
         resp.setCreatedAt(order.getCreatedAt());
         List<OrderItemDto> items = order.getItems().stream().map(item -> {

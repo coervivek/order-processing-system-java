@@ -3,15 +3,19 @@ package com.epam.demo.omsjava.dto;
 import com.epam.demo.omsjava.domain.OrderStatus;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 public class OrderResponse {
-    private Long id;
+    private UUID id;
+    private String userId;
     private OrderStatus status;
     private LocalDateTime createdAt;
     private List<OrderItemDto> items;
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public UUID getId() { return id; }
+    public void setId(UUID id) { this.id = id; }
+    public String getUserId() { return userId; }
+    public void setUserId(String userId) { this.userId = userId; }
     public OrderStatus getStatus() { return status; }
     public void setStatus(OrderStatus status) { this.status = status; }
     public LocalDateTime getCreatedAt() { return createdAt; }

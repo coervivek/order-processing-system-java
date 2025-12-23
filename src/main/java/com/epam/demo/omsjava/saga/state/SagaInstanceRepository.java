@@ -9,7 +9,7 @@ import java.util.Optional;
 
 @Repository
 public interface SagaInstanceRepository extends JpaRepository<SagaInstance, String> {
-    Optional<SagaInstance> findByOrderId(Long orderId);
+    Optional<SagaInstance> findByOrderId(String orderId);
     
     @Query("SELECT s FROM SagaInstance s WHERE s.status = 'STARTED' AND s.startedAt < ?1")
     List<SagaInstance> findTimedOutSagas(LocalDateTime timeout);

@@ -41,7 +41,7 @@ public class SagaTimeoutMonitor {
                 sagaRepository.save(saga);
                 
                 // Trigger compensation
-                sagaOrchestrator.compensateOrder(saga.getOrderId());
+                sagaOrchestrator.compensateOrder(java.util.UUID.fromString(saga.getOrderId()));
             }
         }
     }
