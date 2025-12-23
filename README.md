@@ -151,3 +151,11 @@ order.status.update.cron=0 */5 * * * *
 - Application runs on: `http://localhost:8080`
 - PostgreSQL: `localhost:5432`
 - Kafka: `localhost:9092`
+- **Swagger UI**: `http://localhost:8080/swagger-ui.html`
+- **OpenAPI JSON**: `http://localhost:8080/v3/api-docs`
+
+## API Documentation
+
+Interactive API documentation is available via Swagger UI at `http://localhost:8080/swagger-ui.html`
+
+Alternatively, import `OMS-API.postman_collection.json` into Postman for testing.
