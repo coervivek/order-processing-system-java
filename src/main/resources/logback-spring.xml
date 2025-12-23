@@ -28,6 +28,6 @@
         <appender-ref ref="FILE"/>
     </root>
 
-    <logger name="com.epam.demo.omsjava" level="INFO"/>
+    <logger name="com.demo.oms" level="INFO"/>
     <logger name="org.springframework.kafka" level="WARN"/>
 </configuration>

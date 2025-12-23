@@ -5,7 +5,7 @@ plugins {
     jacoco
 }
 
-group = "com.epam.demo"
+group = "com.demo"
 version = "0.0.1-SNAPSHOT"
 description = "oms-java"
 
