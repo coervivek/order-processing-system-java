@@ -1,6 +1,5 @@
 package com.demo.oms.service.impl;
 
-import com.demo.oms.circuitbreaker.WithCircuitBreaker;
 import com.demo.oms.domain.Order;
 import com.demo.oms.domain.OrderItem;
 import com.demo.oms.domain.OrderStatus;
@@ -32,7 +31,6 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    @WithCircuitBreaker(name = "orderService")
     public OrderResponse createOrder(CreateOrderRequest request) {
         Order order = new Order();
         order.setUserId(request.getUserId());
@@ -56,7 +54,6 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    @WithCircuitBreaker(name = "orderService")
     public OrderResponse getOrder(UUID id) {
         Order order = orderRepository.findById(id)
                 .orElseThrow(() -> new OrderNotFoundException(id));
